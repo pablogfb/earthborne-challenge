@@ -15,25 +15,33 @@ export default function Deck() {
   const [deck, setDeck] = useState(shuffle(initialDeck))
   const [currentCard, setCurrentCard] = useState(null)
   const [discard, setDiscard] = useState([])
-  const [lastDrawn, setLastDrawn] = useState([])
 
   const drawCard = () => {
     if (deck.length === 0) return
 
+    let updatedDeck = [...deck]
+    let updatedDiscard = [...discard]
     if (currentCard) {
-      setLastDrawn(prev => [currentCard, ...prev].slice(0, 5))
+      updatedDiscard = [currentCard, ...updatedDiscard]
     }
-
-    const [drawnCard, ...rest] = deck
-    setDeck(rest)
+  
+    // If shuffle is needed
+    if (currentCard && currentCard.shuffle) {
+      updatedDeck = shuffle([...updatedDeck, ...updatedDiscard])
+      updatedDiscard = []
+    }
+  
+    const [drawnCard, ...restDeck] = updatedDeck
+    if (!drawnCard) return
+  
+    // Update all states at once based on the new local values
+   
+    setDeck(restDeck)
     setCurrentCard(drawnCard)
-    setDiscard(prev => [...prev, drawnCard])
+    setDiscard(updatedDiscard)
 
-    if (drawnCard.shuffle) {
-      setDeck(shuffle([...rest, ...discard, drawnCard]))
-      setDiscard([])
-    }
   }
+  
 
   return (
     <div className="p-4 text-[#fcfce9]">
@@ -62,10 +70,10 @@ export default function Deck() {
         )}
       </div>
       <div className="mt-4">
-        <h2 className="text-lg font-semibold">Previous drawn cards:</h2>
-        <div className="flex justify-center">
-          {Array.isArray(lastDrawn) &&
-            lastDrawn.map((card, index) => (
+        <h2 className="text-lg font-semibold">Previous drawn cards (most recent first):</h2>
+        <div className="flex justify-center flex-wrap">
+          {discard.length > 0 &&
+            discard.map((card, index) => (
               <Card key={card.id ?? index} {...card} size="small" />
             ))}
         </div>

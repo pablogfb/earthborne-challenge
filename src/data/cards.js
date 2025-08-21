@@ -1,0 +1,27 @@
+export const cards = [
+    {"awareness":1,"spirit":1,"fitness":0,"focus":-2,"symbol":"crest","shuffle":true},
+    {"awareness":1,"spirit":-2,"fitness":1,"focus":0,"symbol":"crest","shuffle":true},
+    {"awareness":0,"spirit":1,"fitness":-2,"focus":1,"symbol":"sun","shuffle":true},
+    {"awareness":-2,"spirit":0,"fitness":1,"focus":1,"symbol":"sun","shuffle":true},
+    {"awareness":0,"spirit":0,"fitness":-1,"focus":-1,"symbol":"sun","shuffle":false},
+    {"awareness":1,"spirit":0,"fitness":0,"focus":-1,"symbol":"sun","shuffle":false},
+    {"awareness":-1,"spirit":1,"fitness":0,"focus":0,"symbol":"sun","shuffle":false},
+    {"awareness":-1,"spirit":0,"fitness":-1,"focus":0,"symbol":"crest","shuffle":false},
+    {"awareness":1,"spirit":0,"fitness":-1,"focus":0,"symbol":"mountain","shuffle":false},
+    {"awareness":-1,"spirit":0,"fitness":0,"focus":-1,"symbol":"mountain","shuffle":false},
+    {"awareness":0,"spirit":0,"fitness":1,"focus":-1,"symbol":"crest","shuffle":false},
+    {"awareness":0,"spirit":1,"fitness":0,"focus":-1,"symbol":"mountain","shuffle":false},
+    {"awareness":1,"spirit":-1,"fitness":0,"focus":0,"symbol":"mountain","shuffle":false},
+    {"awareness":0,"spirit":-1,"fitness":0,"focus":-1,"symbol":"sun","shuffle":false},
+    {"awareness":-1,"spirit":-1,"fitness":0,"focus":0,"symbol":"crest","shuffle":false},
+    {"awareness":-1,"spirit":0,"fitness":1,"focus":0,"symbol":"sun","shuffle":false},
+    {"awareness":0,"spirit":-1,"fitness":0,"focus":1,"symbol":"crest","shuffle":false},
+    {"awareness":0,"spirit":-1,"fitness":-1,"focus":0,"symbol":"mountain","shuffle":false},
+    {"awareness":-1,"spirit":1,"fitness":1,"focus":-1,"symbol":"mountain","shuffle":false},
+    {"awareness":0,"spirit":0,"fitness":-1,"focus":1,"symbol":"mountain","shuffle":false},
+    {"awareness":0,"spirit":-1,"fitness":1,"focus":0,"symbol":"sun","shuffle":false},
+    {"awareness":0,"spirit":1,"fitness":-1,"focus":0,"symbol":"crest","shuffle":false},
+    {"awareness":1,"spirit":-1,"fitness":-1,"focus":1,"symbol":"mountain","shuffle":false},
+    {"awareness":-1,"spirit":0,"fitness":0,"focus":1,"symbol":"crest","shuffle":false}
+  ]
+  

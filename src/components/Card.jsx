@@ -72,7 +72,7 @@ export default function Card({
   
           {shuffle && (
             <img
-              src="/src/assets/images/shuffle.svg"
+              src={svgImages[`/src/assets/images/shuffle.svg`]?.default}
               alt="Shuffle"
               className={`${s.shuffle} absolute top-1/2 -translate-y-1/2`}
             />

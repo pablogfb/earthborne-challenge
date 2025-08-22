@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { cards as initialDeck } from "../data/cards"
 import Card from "./Card"
 import Modal from "./Modal";
@@ -19,6 +19,13 @@ export default function Deck() {
   const [open, setOpen] = useState(false);
   const [scoutedCards, setScoutedCards] = useState([]);
   const scoutNumber = useRef();
+
+  useEffect(() => {
+    if (open && scoutNumber.current) {
+      scoutNumber.current.focus();
+      scoutNumber.current.select(); 
+    }
+  }, [open]);
 
   const drawCard = () => {
     if (deck.length === 0) return
@@ -47,16 +54,45 @@ export default function Deck() {
   }
 
   const scoutCards = () => {
-    if (deck.length === 0 || scoutNumber <= 0) return;
+    if (!scoutNumber.current) return;
+  
+    const amount = parseInt(scoutNumber.current.value, 10);
+    if (isNaN(amount) || amount <= 0) return;
+  
+    setDeck((prevDeck) => {
+      const cardsToScout = prevDeck.slice(0, amount);
+      const remaining = prevDeck.slice(amount);
+  
+      setScoutedCards(cardsToScout);
+      return remaining;
+    });
+  };
 
-    const cardsToScout = deck.slice(0, scoutNumber.current.value);
-    setScoutedCards(cardsToScout);
+  const sendToTop = (index) => {
+    if (scoutedCards.length === 0) return;
+    const cardToTop = scoutedCards[index];
+    setDeck((prev) => [cardToTop, ...prev]);
+    setScoutedCards((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const sendToBottom = (index) => {
+    if (scoutedCards.length === 0) return;
+    const cardToBottom = scoutedCards[index];
+    setDeck((prev) => [...prev, cardToBottom]);
+    setScoutedCards((prev) => {
+      const updated = prev.filter((_, i) => i !== index);
+      if (updated.length === 0) {
+        closeModal();
+      }
+      return updated;
+    });
   };
 
   const closeModal = () => {
     setOpen(false);
+    setDeck(prev => [...scoutedCards, ...prev])
     setScoutedCards([]);
-    scoutNumber.current.value = '';
+    scoutNumber.current.value = 1;
   };
 
 
@@ -105,15 +141,33 @@ export default function Deck() {
         </button>
       </div>
       <Modal isOpen={open} onClose={closeModal} title="Mi Modal">
-        <input type="number" className="border p-2 rounded w-full mt-2" placeholder="Number of cards to scout" ref={scoutNumber} />
+        <input type="number" className="border p-2 rounded w-full mt-2" placeholder="Number of cards to scout" ref={scoutNumber} defaultValue={1} />
         <button className="mt-4 px-4 py-2 bg-[#fcfce9] text-[#1e4131] rounded-lg" onClick={scoutCards}>Scout!</button>
 
         <div>
           <h3 className="text-lg font-semibold mt-4">Scouted Cards:</h3>
           <div className="flex justify-center flex-wrap">
+            <p className="text-sm text-gray-500 mb-2">
+              The last card added to top will be the first to go.
+            </p>
             {scoutedCards.length > 0 ? (
               scoutedCards.map((card, index) => (
-                <Card key={card.id ?? index} {...card} size="small" />
+                <div key={index} className="flex flex-col items-center m-1">
+                  <Card {...card} size="small" />
+                  <div className="m-1 flex">
+                    <button
+                      className="px-1 py-1 bg-gray-600 text-white rounded mr-2 text-sm"
+                      onClick={() => sendToTop(index)}>
+                      Top
+                    </button>
+                    <button
+                      className="px-1 py-1 bg-gray-600 text-white rounded text-sm"
+                      onClick={() => sendToBottom(index)}>
+                      Bottom
+                    </button>
+                  </div>
+                </div>
+
               ))
             ) : (
               <p>No cards scouted yet</p>
